@@ -1,0 +1,33 @@
+<!doctype html>
+<!--
+   Tentative due to:
+    https://github.com/whatwg/html/issues/3739
+-->
+<html>
+<head>
+<script src="/resources/testharness.js"></script>
+<script src="/resources/testharnessreport.js"></script>
+<script src="/resources/testdriver.js"></script>
+<script src="/resources/testdriver-vendor.js"></script>
+</head>
+<body>
+  <h1>Clicking on document sets user activation</h1>
+  <p>Click anywhere in the document.</p>
+  <script>
+    async_test(function(t) {
+      assert_false(window.userActivation.hasBeenActive);
+      assert_false(window.userActivation.isActive);
+      window.addEventListener("click", t.step_func_done(event => {
+        assert_true(window.userActivation.hasBeenActive);
+        assert_true(window.userActivation.isActive);
+
+        // Opening a window should consume the activation.
+        window.open('404.html');
+        assert_true(window.userActivation.hasBeenActive);
+        assert_false(window.userActivation.isActive);
+      }));
+      test_driver.click(document.body);
+    }, "Values adjust on activity");
+  </script>
+</body>
+</html>

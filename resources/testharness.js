@@ -1831,9 +1831,7 @@ policies and contribution forms [3].
             tests.status.message = data.status.message;
             tests.status.stack = data.status.stack;
         }
-        if (this.message_target) {
-            this.message_target.removeEventListener("message", this.message_handler);
-        }
+        this.message_target.removeEventListener("message", this.message_handler);
         this.running = false;
         this.remote = null;
         this.message_target = null;
@@ -2989,6 +2987,7 @@ policies and contribution forms [3].
                 tests.status.stack = stack;
             }
             done();
+            e.preventDefault();
         };
 
         addEventListener("error", error_handler, false);

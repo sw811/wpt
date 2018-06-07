@@ -1831,7 +1831,9 @@ policies and contribution forms [3].
             tests.status.message = data.status.message;
             tests.status.stack = data.status.stack;
         }
-        this.message_target.removeEventListener("message", this.message_handler);
+        if (this.message_target) {
+            this.message_target.removeEventListener("message", this.message_handler);
+        }
         this.running = false;
         this.remote = null;
         this.message_target = null;

@@ -8,6 +8,22 @@
 // This file depends on dictionary-helper.js which should
 // be loaded from the main HTML file.
 
+async function setupCall(t, caller, kind = 'audio') {
+  const callee = new RTCPeerConnection();
+  t.add_cleanup(() => callee.close());
+  const constraints = {};
+  constraints[kind] = true;
+  const stream = await navigator.mediaDevices.getUserMedia(constraints);
+  const [track] = stream.getTracks();
+  callee.addTrack(track);
+  const offer = await caller.createOffer();
+  await caller.setLocalDescription(offer);
+  await callee.setRemoteDescription(offer);
+  const answer = await callee.createAnswer();
+  await callee.setLocalDescription(answer);
+  await caller.setRemoteDescription(answer);
+}
+
 /*
   Validates the RTCRtpParameters returned from RTCRtpSender.prototype.getParameters
 

@@ -1,3 +1,9 @@
+if (!('pictureInPictureEnabled' in document)) {
+  HTMLVideoElement.prototype.requestPictureInPicture = function() {
+    return Promise.reject('Picture-in-Picture API is not available');
+  }
+}
+
 function callWithTrustedClick(callback) {
   return new Promise(resolve => {
     let button = document.createElement('button');
